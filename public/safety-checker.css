@@ -1,0 +1,327 @@
+/* 安全運転チェッカー用スタイル */
+.safety-main {
+    padding-top: 90px;
+    min-height: calc(100vh - 70px);
+    background: linear-gradient(135deg, #f8fffe 0%, #ffffff 100%);
+}
+
+.safety-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.safety-header h1 {
+    font-size: 1.8rem;
+    color: #1a4d2e;
+    margin-bottom: 0.5rem;
+}
+
+.safety-header p {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+}
+
+.safety-note {
+    font-size: 0.8rem !important;
+    color: #999 !important;
+}
+
+.nav__actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.nav__cta--secondary {
+    background: white;
+    color: #1a4d2e;
+    border: 1px solid #1a4d2e;
+}
+
+.nav__cta--secondary:hover {
+    background: #f1f8e9;
+}
+
+.checker-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    border: 1px solid #e0e0e0;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0;
+}
+
+.form-section h2 {
+    font-size: 1.2rem;
+    color: #1a4d2e;
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.7rem;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    background: white;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #1a4d2e;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.radio-label {
+    display: flex !important;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 400 !important;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.radio-label:hover {
+    background: #f9f9f9;
+}
+
+.radio-label input[type="radio"] {
+    cursor: pointer;
+}
+
+.check-button {
+    width: 100%;
+    background: #1a4d2e;
+    color: white;
+    border: none;
+    padding: 0.9rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.check-button:hover {
+    background: #2d5f3b;
+}
+
+/* 結果画面 */
+.result-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    border: 1px solid #e0e0e0;
+}
+
+.score-display {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8fffe 0%, #e8f5e9 100%);
+    border-radius: 12px;
+}
+
+.score-circle {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: white;
+    border: 6px solid #1a4d2e;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 16px rgba(26, 77, 46, 0.2);
+}
+
+.score-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a4d2e;
+    line-height: 1;
+}
+
+.score-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.3rem;
+}
+
+.score-grade {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1a4d2e;
+}
+
+.result-details h2 {
+    font-size: 1.3rem;
+    color: #1a4d2e;
+    margin-bottom: 0.8rem;
+}
+
+.result-details h3 {
+    font-size: 1.1rem;
+    color: #1a4d2e;
+    margin: 1.5rem 0 0.8rem;
+    font-weight: 600;
+}
+
+.result-message {
+    background: #f1f8e9;
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.improvement-list {
+    list-style: none;
+}
+
+.improvement-list li {
+    padding: 0.7rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #444;
+    line-height: 1.6;
+}
+
+.improvement-list li:before {
+    content: "→";
+    position: absolute;
+    left: 0.3rem;
+    color: #1a4d2e;
+    font-weight: bold;
+}
+
+.ai-advice {
+    display: flex;
+    gap: 0.8rem;
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 10px;
+    border-left: 3px solid #1a4d2e;
+}
+
+.ai-advice-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e8f5e9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.ai-advice-content {
+    flex: 1;
+    color: #333;
+    line-height: 1.6;
+}
+
+.result-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2rem;
+}
+
+.action-button {
+    flex: 1;
+    background: white;
+    color: #1a4d2e;
+    border: 1px solid #1a4d2e;
+    padding: 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.action-button:hover {
+    background: #f1f8e9;
+}
+
+.action-button--primary {
+    background: #1a4d2e;
+    color: white;
+    border: none;
+}
+
+.action-button--primary:hover {
+    background: #2d5f3b;
+}
+
+@media (max-width: 768px) {
+    .checker-container,
+    .result-container {
+        padding: 1.5rem;
+        margin: 0 10px;
+    }
+    
+    .nav__actions {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    
+    .nav__cta {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .result-actions {
+        flex-direction: column;
+    }
+    
+    .score-circle {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .score-number {
+        font-size: 2rem;
+    }
+}

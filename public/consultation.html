@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI相談 | ライフステージ・モビリティパートナー</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="consultation.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__logo">
+                <h1 onclick="goHome()" style="cursor: pointer;">ライフステージ・モビリティパートナー</h1>
+            </div>
+            <button class="nav__cta" onclick="goHome()">ホームに戻る</button>
+        </nav>
+    </header>
+
+    <main class="consultation-main">
+        <div class="container">
+            <div class="consultation-header">
+                <h1>専属AIパートナーに相談</h1>
+                <p>あなたのライフスタイルに合った車種・契約期間を提案します</p>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message message-ai">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            <p>こんにちは！私はあなたの専属AIパートナーです。</p>
+                            <p>車のこと、ライフスタイルのことをお聞かせいただければ、最適な短期リースをご提案します。</p>
+                            <p>まず、どのような状況ですか？（例：大学生、新社会人、転勤予定、子育て中など）</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-container">
+                    <input 
+                        type="text" 
+                        id="userInput" 
+                        class="chat-input" 
+                        placeholder="メッセージを入力してください..."
+                        onkeypress="handleKeyPress(event)"
+                    >
+                    <button class="chat-send" onclick="sendMessage()">送信</button>
+                </div>
+            </div>
+
+            <div class="suggestions" id="suggestions">
+                <button class="suggestion-btn" onclick="quickReply('大学生です')">大学生です</button>
+                <button class="suggestion-btn" onclick="quickReply('新社会人です')">新社会人です</button>
+                <button class="suggestion-btn" onclick="quickReply('転勤が決まっています')">転勤が決まっています</button>
+                <button class="suggestion-btn" onclick="quickReply('結婚・子育て中です')">結婚・子育て中です</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="consultation.js"></script>
+</body>
+</html>

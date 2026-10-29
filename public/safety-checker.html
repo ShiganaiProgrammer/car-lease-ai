@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安全運転チェッカー | ライフステージ・モビリティパートナー</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="safety-checker.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__logo">
+                <h1 onclick="goHome()" style="cursor: pointer;">ライフステージ・モビリティパートナー</h1>
+            </div>
+            <div class="nav__actions">
+                <button class="nav__cta" onclick="goConsultation()">AIに相談する</button>
+                <button class="nav__cta nav__cta--secondary" onclick="goHome()">ホームに戻る</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="safety-main">
+        <div class="container">
+            <div class="safety-header">
+                <h1>🛡️ 安全運転チェッカー</h1>
+                <p>運転習慣をチェックして、安全運転スキルを見直しましょう</p>
+                <p class="safety-note">※ 手動入力モードです。より正確に判定するには<a href="safety-auto.html" style="color: #1a4d2e;">自動判定モード</a>をご利用ください。</p>
+            </div>
+
+            <div class="checker-container" id="checkerForm">
+                <div class="form-section">
+                    <h2>運転状況</h2>
+                    
+                    <div class="form-group">
+                        <label for="distance">走行距離（km）</label>
+                        <input type="number" id="distance" class="form-input" placeholder="例：15" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timeOfDay">主な走行時間帯</label>
+                        <select id="timeOfDay" class="form-select">
+                            <option value="">選択してください</option>
+                            <option value="morning">朝（6:00-9:00）</option>
+                            <option value="day">昼（9:00-17:00）</option>
+                            <option value="evening">夕方（17:00-20:00）</option>
+                            <option value="night">夜（20:00-24:00）</option>
+                            <option value="late">深夜（0:00-6:00）</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>運転習慣</h2>
+                    
+                    <div class="form-group">
+                        <label>急ブレーキはありますか？</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="hardBrake" value="0" checked>
+                                <span>なし（0回）</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="hardBrake" value="1">
+                                <span>1-2回</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="hardBrake" value="2">
+                                <span>3回以上</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>急加速はありますか？</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="hardAccel" value="0" checked>
+                                <span>なし</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="hardAccel" value="1">
+                                <span>時々</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="hardAccel" value="2">
+                                <span>よくある</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>速度超過はありますか？</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="speeding" value="0" checked>
+                                <span>なし</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="speeding" value="1">
+                                <span>軽微</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="speeding" value="2">
+                                <span>頻繁</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>スマホ・ナビ操作は運転中に行いましたか？</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="phone" value="0" checked>
+                                <span>なし</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="phone" value="1">
+                                <span>一時的に</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="phone" value="2">
+                                <span>頻繁に</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>信号・一時停止は適切に守れていますか？</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="signal" value="2" checked>
+                                <span>いつも守っている</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="signal" value="1">
+                                <span>たまに忘れる</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="signal" value="0">
+                                <span>あまり意識していない</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="check-button" onclick="calculateScore()">安全運転スコアをチェック</button>
+            </div>
+
+            <div class="result-container" id="resultContainer" style="display: none;">
+                <div class="score-display">
+                    <div class="score-circle">
+                        <div class="score-number" id="scoreNumber">0</div>
+                        <div class="score-label">/ 100 点</div>
+                    </div>
+                    <div class="score-grade" id="scoreGrade">-</div>
+                </div>
+
+                <div class="result-details">
+                    <h2>評価結果</h2>
+                    <div class="result-message" id="resultMessage"></div>
+                    
+                    <h3>改善ポイント</h3>
+                    <ul class="improvement-list" id="improvementList">
+                    </ul>
+
+                    <h3>AIからのアドバイス</h3>
+                    <div class="ai-advice" id="aiAdvice">
+                        <div class="ai-advice-avatar">🤖</div>
+                        <div class="ai-advice-content" id="aiAdviceContent"></div>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button class="action-button" onclick="retakeCheck()">もう一度チェックする</button>
+                    <button class="action-button action-button--primary" onclick="goConsultation()">AIパートナーに相談する</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ライフステージ・モビリティパートナー. 提案検討段階.</p>
+        </div>
+    </footer>
+
+    <script src="safety-checker.js"></script>
+</body>
+</html>

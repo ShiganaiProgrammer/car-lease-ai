@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>思い出アルバム | ライフステージ・モビリティパートナー</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="album.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__logo">
+                <h1 onclick="goHome()" style="cursor: pointer;">ライフステージ・モビリティパートナー</h1>
+            </div>
+            <div class="nav__actions">
+                <button class="nav__cta" onclick="goConsultation()">AIに相談する</button>
+                <button class="nav__cta nav__cta--secondary" onclick="goHome()">ホームに戻る</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="album-main">
+        <div class="container">
+            <div class="album-header">
+                <h1>📸 思い出アルバム</h1>
+                <p>ドライブの思い出や訪れた場所を記録して、AIパートナーと振り返ろう</p>
+                <p class="album-note">※ 車が変わっても、思い出はAIパートナーが大切に引き継ぎます</p>
+            </div>
+
+            <!-- 統計 -->
+            <div class="album-stats">
+                <div class="stat-box">
+                    <div class="stat-box-icon">📷</div>
+                    <div class="stat-box-info">
+                        <div class="stat-box-number" id="photoCount">0</div>
+                        <div class="stat-box-label">写真</div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-icon">📍</div>
+                    <div class="stat-box-info">
+                        <div class="stat-box-number" id="placeCount">0</div>
+                        <div class="stat-box-label">訪れた場所</div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-icon">🗓️</div>
+                    <div class="stat-box-info">
+                        <div class="stat-box-number" id="tripCount">0</div>
+                        <div class="stat-box-label">ドライブ記録</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 思い出追加ボタン -->
+            <div class="add-memory-section">
+                <button class="add-memory-btn" onclick="openMemoryModal()">
+                    <span class="add-memory-icon">+</span>
+                    <span>新しい思い出を追加する</span>
+                </button>
+            </div>
+
+            <!-- タブ -->
+            <div class="album-tabs">
+                <button class="tab-btn active" onclick="switchTab('timeline')" id="tab-timeline">タイムライン</button>
+                <button class="tab-btn" onclick="switchTab('gallery')" id="tab-gallery">ギャラリー</button>
+                <button class="tab-btn" onclick="switchTab('map')" id="tab-map">訪問マップ</button>
+            </div>
+
+            <!-- タイムライン -->
+            <div class="tab-content active" id="content-timeline">
+                <div class="timeline" id="timelineContainer">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🚗</div>
+                        <h3>まだ思い出がありません</h3>
+                        <p>初めてのドライブの写真や場所を記録してみましょう</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ギャラリー -->
+            <div class="tab-content" id="content-gallery">
+                <div class="gallery" id="galleryContainer">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📷</div>
+                        <h3>写真がありません</h3>
+                        <p>思い出に写真を追加してアルバムを彩りましょう</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- マップ -->
+            <div class="tab-content" id="content-map">
+                <div class="map-container">
+                    <div class="map-header">
+                        <h3>🗺️ 訪れた場所</h3>
+                        <p>これまでに記録したドライブで訪れた場所です</p>
+                    </div>
+                    <div class="map-places" id="mapPlaces">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📍</div>
+                            <h3>場所が記録されていません</h3>
+                            <p>思い出を追加する際に場所を記録してみましょう</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 思い出追加モーダル -->
+    <div class="modal" id="memoryModal">
+        <div class="modal-backdrop" onclick="closeMemoryModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>新しい思い出を追加</h2>
+                <button class="modal-close" onclick="closeMemoryModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="memoryTitle">タイトル *</label>
+                    <input type="text" id="memoryTitle" class="form-input" placeholder="例：初めての海岸ドライブ">
+                </div>
+
+                <div class="form-group">
+                    <label for="memoryDate">日付 *</label>
+                    <input type="date" id="memoryDate" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="memoryLocation">訪れた場所</label>
+                    <input type="text" id="memoryLocation" class="form-input" placeholder="例：湘南海岸公園">
+                    <button type="button" class="location-btn" onclick="getCurrentLocation()">📍 現在地を取得</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="memoryPhoto">写真を追加</label>
+                    <input type="file" id="memoryPhoto" class="form-file" accept="image/*" onchange="previewPhoto(event)">
+                    <div class="photo-preview" id="photoPreview" style="display: none;">
+                        <img id="previewImage" src="" alt="プレビュー">
+                        <button type="button" class="photo-remove" onclick="removePhoto()">×</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="memoryNote">メモ・思い出</label>
+                    <textarea id="memoryNote" class="form-textarea" rows="4" placeholder="どんな景色でしたか？どんな気持ちでしたか？"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn--secondary" onclick="closeMemoryModal()">キャンセル</button>
+                <button class="modal-btn modal-btn--primary" onclick="saveMemory()">保存する</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 写真拡大モーダル -->
+    <div class="modal" id="photoModal">
+        <div class="modal-backdrop" onclick="closePhotoModal()"></div>
+        <div class="photo-modal-content">
+            <button class="photo-modal-close" onclick="closePhotoModal()">×</button>
+            <img id="enlargedPhoto" src="" alt="拡大写真">
+            <div class="photo-modal-info" id="photoModalInfo"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ライフステージ・モビリティパートナー. 提案検討段階.</p>
+        </div>
+    </footer>
+
+    <script src="album.js"></script>
+</body>
+</html>

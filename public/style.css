@@ -1,0 +1,400 @@
+/* リセット・ベーススタイル */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    color: #333;
+    background-color: #ffffff;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ヘッダー */
+.header {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.nav__logo h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a4d2e;
+}
+
+.nav__actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.nav__cta {
+    background: #1a4d2e;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.nav__cta:hover {
+    background: #2d5f3b;
+}
+
+/* メインコンテンツ */
+main {
+    padding-top: 70px;
+}
+
+/* ヒーローセクション */
+.hero {
+    background: linear-gradient(135deg, #f8fffe 0%, #e8f5e9 100%);
+    padding: 4rem 0 3rem;
+    text-align: center;
+}
+
+.hero__content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero__title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #1a4d2e;
+    margin-bottom: 1rem;
+}
+
+.hero__subtitle {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #2d5f3b;
+    margin-bottom: 1.5rem;
+}
+
+.hero__description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.hero__cta {
+    background: #1a4d2e;
+    color: white;
+    border: none;
+    padding: 0.9rem 2.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(26, 77, 46, 0.2);
+}
+
+.hero__cta:hover {
+    background: #2d5f3b;
+    box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3);
+    transform: translateY(-2px);
+}
+
+/* セクション共通 */
+section {
+    padding: 3.5rem 0;
+}
+
+.section__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    color: #1a4d2e;
+    margin-bottom: 0.8rem;
+}
+
+.section__subtitle {
+    text-align: center;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2.5rem;
+}
+
+/* 課題セクション */
+.problem {
+    background: white;
+}
+
+.lifecycle {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.lifecycle__item {
+    background: #f9f9f9;
+    padding: 1.8rem;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+}
+
+.lifecycle__icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.lifecycle__item h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a4d2e;
+    margin-bottom: 0.6rem;
+}
+
+.lifecycle__item p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* 提案概要セクション */
+.solution {
+    background: linear-gradient(135deg, #f8fffe 0%, #f1f8e9 100%);
+}
+
+.solution__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.8rem;
+    margin-top: 2rem;
+}
+
+.solution__card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border-left: 4px solid #1a4d2e;
+}
+
+.solution__card h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1a4d2e;
+    margin-bottom: 1rem;
+}
+
+.solution__card ul {
+    list-style: none;
+}
+
+.solution__card li {
+    padding: 0.5rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.solution__card li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #1a4d2e;
+    font-weight: bold;
+}
+
+/* AI機能セクション */
+.features {
+    background: white;
+}
+
+.features__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.feature__item {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #e8e8e8;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature__item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.feature__icon {
+    font-size: 2rem;
+    margin-bottom: 0.6rem;
+}
+
+.feature__item h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a4d2e;
+    margin-bottom: 0.4rem;
+}
+
+.feature__item p {
+    font-size: 0.85rem;
+    color: #555;
+}
+
+/* 機能紹介セクション */
+.features-section {
+    background: white;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 1.8rem;
+    border-radius: 12px;
+    border: 2px solid #e8f5e9;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.feature-card:hover {
+    border-color: #1a4d2e;
+    box-shadow: 0 4px 16px rgba(26, 77, 46, 0.12);
+    transform: translateY(-3px);
+}
+
+.feature-card-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+}
+
+.feature-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a4d2e;
+    margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+}
+
+.feature-card-link {
+    color: #1a4d2e;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* CTAセクション */
+.cta {
+    background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3b 100%);
+    text-align: center;
+    color: white;
+}
+
+.cta__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+}
+
+.cta__description {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    opacity: 0.95;
+}
+
+.cta__button {
+    background: white;
+    color: #1a4d2e;
+    border: none;
+    padding: 0.9rem 2.8rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.cta__button:hover {
+    background: #f1f8e9;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* フッター */
+.footer {
+    background: #1a1a1a;
+    color: #aaa;
+    text-align: center;
+    padding: 2rem 0;
+    font-size: 0.85rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .hero__title {
+        font-size: 1.8rem;
+    }
+    
+    .hero__subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .section__title {
+        font-size: 1.5rem;
+    }
+    
+    .nav__logo h1 {
+        font-size: 0.9rem;
+    }
+    
+    .nav__cta {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    section {
+        padding: 2.5rem 0;
+    }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "car-lease-ai",
+  "version": "0.1.0",
+  "description": "短期カーリース × 専属AIパートナー アプリ",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {}
+}

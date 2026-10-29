@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自動判定モード | 安全運転チェッカー</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="safety-auto.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__logo">
+                <h1 onclick="goHome()" style="cursor: pointer;">ライフステージ・モビリティパートナー</h1>
+            </div>
+            <div class="nav__actions">
+                <button class="nav__cta" onclick="goManual()">手動入力に戻る</button>
+                <button class="nav__cta nav__cta--secondary" onclick="goHome()">ホームに戻る</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="auto-main">
+        <div class="container">
+            <div class="auto-header">
+                <h1>📍 位置情報・加速度で自動判定</h1>
+                <p>GPSと加速度センサーを使って、急ブレーキ・急加速を自動で検出します</p>
+                <p class="auto-note">※ 実際の車両データではなく、スマートフォンのセンサーを使用します。精度は環境により変動します。</p>
+            </div>
+
+            <!-- 許可・説明画面 -->
+            <div class="permission-container" id="permissionContainer">
+                <div class="permission-card">
+                    <h2>必要な権限</h2>
+                    <ul class="permission-list">
+                        <li>
+                            <strong>📍 位置情報</strong>
+                            <p>移動速度と急な減速・加速を検出するために使用します</p>
+                        </li>
+                        <li>
+                            <strong>📱 モーション・方向センサー（加速度）</strong>
+                            <p>より正確に急ブレーキ・急加速を判定するために使用します（一部端末のみ）</p>
+                        </li>
+                    </ul>
+                    <div class="permission-warning">
+                        <strong>⚠️ プライバシーについて</strong>
+                        <p>取得した位置情報・センサーデータはこの端末内でのみ処理され、サーバーには送信されません。</p>
+                    </div>
+                    <button class="start-button" onclick="startDetection()">測定を開始する</button>
+                    <p class="permission-help">※ 測定中は画面を開いたまま運転してください。安全のため停車中の操作は避けてください。</p>
+                </div>
+            </div>
+
+            <!-- 測定中画面 -->
+            <div class="detection-container" id="detectionContainer" style="display: none;">
+                <div class="detection-status">
+                    <div class="status-indicator" id="statusIndicator">
+                        <span class="status-dot"></span>
+                        <span class="status-text">測定中</span>
+                    </div>
+                    <button class="stop-button" onclick="stopDetection()">測定を終了</button>
+                </div>
+
+                <div class="debug-panel">
+                    <p id="debugInfo">位置情報を待機中...</p>
+                </div>
+
+                <div class="live-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">現在速度</div>
+                        <div class="stat-value"><span id="currentSpeed">0</span> km/h</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">経過時間</div>
+                        <div class="stat-value" id="elapsedTime">00:00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">走行距離</div>
+                        <div class="stat-value"><span id="totalDistance">0.00</span> km</div>
+                    </div>
+                </div>
+
+                <div class="events-panel">
+                    <h2>検出されたイベント</h2>
+                    <div class="events-count">
+                        <div class="event-count-item">
+                            <span class="event-icon">🛑</span>
+                            <span class="event-label">急ブレーキ</span>
+                            <span class="event-number" id="hardBrakeCount">0</span>
+                        </div>
+                        <div class="event-count-item">
+                            <span class="event-icon">⚡</span>
+                            <span class="event-label">急加速</span>
+                            <span class="event-number" id="hardAccelCount">0</span>
+                        </div>
+                    </div>
+                    <div class="events-log" id="eventsLog">
+                        <p class="events-empty">まだイベントは検出されていません</p>
+                    </div>
+                </div>
+
+                <div class="detection-tips">
+                    <p>💡 ヒント: 測定は実際の走行中に行うとより正確に判定されます</p>
+                </div>
+            </div>
+
+            <!-- 結果画面 -->
+            <div class="result-container-auto" id="resultContainerAuto" style="display: none;">
+                <div class="result-header">
+                    <h2>測定結果</h2>
+                    <p>測定時間: <span id="resultTime">00:00</span> / 走行距離: <span id="resultDistance">0.00</span> km</p>
+                </div>
+
+                <div class="score-display-auto">
+                    <div class="score-circle-auto">
+                        <div class="score-number-auto" id="autoScoreNumber">0</div>
+                        <div class="score-label-auto">/ 100 点</div>
+                    </div>
+                    <div class="score-grade-auto" id="autoScoreGrade">-</div>
+                </div>
+
+                <div class="result-details-auto">
+                    <h3>検出サマリー</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-label">急ブレーキ</div>
+                            <div class="summary-value"><span id="summaryBrake">0</span>回</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">急加速</div>
+                            <div class="summary-value"><span id="summaryAccel">0</span>回</div>
+                        </div>
+                    </div>
+
+                    <h3>評価メッセージ</h3>
+                    <div class="result-message-auto" id="resultMessageAuto"></div>
+
+                    <h3>AIからのアドバイス</h3>
+                    <div class="ai-advice-auto">
+                        <div class="ai-advice-avatar-auto">🤖</div>
+                        <div class="ai-advice-content-auto" id="aiAdviceContentAuto"></div>
+                    </div>
+                </div>
+
+                <div class="result-actions-auto">
+                    <button class="action-button-auto" onclick="retakeAuto()">もう一度測定する</button>
+                    <button class="action-button-auto action-button-auto--primary" onclick="goManual()">手動で詳細チェック</button>
+                    <button class="action-button-auto" onclick="goConsultation()">AIパートナーに相談する</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ライフステージ・モビリティパートナー. 提案検討段階.</p>
+        </div>
+    </footer>
+
+    <script src="safety-auto.js"></script>
+</body>
+</html>
