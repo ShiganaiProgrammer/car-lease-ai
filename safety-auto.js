@@ -74,6 +74,12 @@ function handlePositionUpdate(position) {
     const lng = position.coords.longitude;
     const speed = position.coords.speed;
     
+    const lastUpdateEl = document.getElementById('lastUpdate');
+    if (lastUpdateEl) {
+        const now = new Date();
+        lastUpdateEl.textContent = `最終更新: ${now.toLocaleTimeString('ja-JP')}`;
+    }
+    
     // 初回の位置を記録（距離計算の起点として使用）
     if (!firstFix) {
         lastPosition = { lat: lat, lng: lng, calcSpeed: 0 };
