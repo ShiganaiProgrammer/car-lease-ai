@@ -8,6 +8,7 @@ let totalDistance = 0;
 let hardBrakeCount = 0;
 let hardAccelCount = 0;
 let eventsLog = [];
+let firstFix = false;
 
 const BRAKE_THRESHOLD = -8.0; // m/s^2 (約-0.8G) 急ブレーキ判定
 const ACCEL_THRESHOLD = 6.0;  // m/s^2 (約0.6G) 急加速判定
@@ -35,6 +36,7 @@ function startDetection() {
     totalDistance = 0;
     hardBrakeCount = 0;
     hardAccelCount = 0;
+    firstFix = false;
     
     document.getElementById('hardBrakeCount').textContent = '0';
     document.getElementById('hardAccelCount').textContent = '0';
@@ -56,7 +58,7 @@ function startDetection() {
             handlePositionError,
             {
                 enableHighAccuracy: true,
-                timeout: 15000,
+                timeout: 20000,
                 maximumAge: 0
             }
         );
@@ -72,58 +74,67 @@ function handlePositionUpdate(position) {
     const lng = position.coords.longitude;
     const speed = position.coords.speed;
     
+    // 初回の位置を記録（距離計算の起点として使用）
+    if (!firstFix) {
+        lastPosition = { lat: lat, lng: lng, calcSpeed: 0 };
+        lastTime = currentTime;
+        firstFix = true;
+        document.getElementById('debugInfo').textContent = `GPS初期化完了 | 精度${position.coords.accuracy.toFixed(0)}m | 移動を開始してください`;
+        document.getElementById('currentSpeed').textContent = '0';
+        return;
+    }
+    
     let speedKmh = 0;
     
-    // まずGPS速度を試す
-    if (speed !== null && typeof speed === 'number' && speed >= 0) {
+    // GPS速度を優先
+    if (speed !== null && typeof speed === 'number' && !isNaN(speed) && speed >= 0) {
         speedKmh = speed * 3.6;
     }
     
-    // 初回またはGPS速度が0/未取得の場合は移動距離から計算
-    if (lastPosition && lastTime && speedKmh < 1) {
+    // 移動距離から速度を計算
+    if (lastPosition && lastTime) {
         const timeDiff = (currentTime - lastTime) / 1000;
-        if (timeDiff > 0.1 && timeDiff < 60) {
+        if (timeDiff > 0.1 && timeDiff < 120) {
             const dist = calculateDistance(lastPosition.lat, lastPosition.lng, lat, lng);
-            if (dist > 0.00001) {
-                const calcSpeed = (dist / timeDiff) * 3600;
-                if (calcSpeed > speedKmh) {
-                    speedKmh = calcSpeed;
+            if (dist > 0.000001) {
+                const calcSpeedKmh = (dist / timeDiff) * 3600;
+                // GPS速度がないか小さい場合は計算速度を使用
+                if (speed === null || speedKmh < calcSpeedKmh || calcSpeedKmh > speedKmh) {
+                    if (calcSpeedKmh < 200) {
+                        speedKmh = calcSpeedKmh;
+                    }
+                }
+                
+                // 距離を加算
+                if (position.coords.accuracy <= 200 && dist < 5.0) {
+                    totalDistance += dist;
+                    document.getElementById('totalDistance').textContent = totalDistance.toFixed(3);
                 }
             }
         }
     }
     
     if (speedKmh < 0) speedKmh = 0;
-    if (speedKmh > 250) speedKmh = Math.min(speedKmh, 120); // 異常値制限
     
     document.getElementById('debugInfo').textContent = `GPS: 精度${position.coords.accuracy.toFixed(0)}m | 速度${Math.round(speedKmh)} km/h`;
     document.getElementById('currentSpeed').textContent = Math.round(speedKmh);
     
-    // 距離計算
-    if (lastPosition) {
-        const distance = calculateDistance(lastPosition.lat, lastPosition.lng, lat, lng);
-        if (position.coords.accuracy <= 150 && distance > 0.000005 && distance < 2.0) {
-            totalDistance += distance;
-            document.getElementById('totalDistance').textContent = totalDistance.toFixed(3);
-        }
-        
-        // イベント検出
-        if (lastTime && lastPosition.calcSpeed !== undefined) {
-            const timeDiff = (currentTime - lastTime) / 1000;
-            if (timeDiff > 0.2 && timeDiff < 10) {
-                const prevSpeed = lastPosition.calcSpeed;
-                const diff = speedKmh - prevSpeed;
-                const accelPerSec = diff / timeDiff;
-                
-                if (accelPerSec < -12 && speedKmh >= 3 && prevSpeed > speedKmh) {
-                    hardBrakeCount++;
-                    document.getElementById('hardBrakeCount').textContent = hardBrakeCount;
-                    addEventLog('brake', `急ブレーキ検出`);
-                } else if (accelPerSec > 9 && speedKmh > prevSpeed && speedKmh >= 5) {
-                    hardAccelCount++;
-                    document.getElementById('hardAccelCount').textContent = hardAccelCount;
-                    addEventLog('accel', `急加速検出`);
-                }
+    // イベント検出
+    if (lastPosition && lastPosition.calcSpeed !== undefined && lastTime) {
+        const timeDiff = (currentTime - lastTime) / 1000;
+        if (timeDiff > 0.2 && timeDiff < 15) {
+            const prevSpeed = lastPosition.calcSpeed;
+            const diff = speedKmh - prevSpeed;
+            const accelPerSec = diff / timeDiff;
+            
+            if (accelPerSec < -15 && speedKmh > 2 && prevSpeed > speedKmh) {
+                hardBrakeCount++;
+                document.getElementById('hardBrakeCount').textContent = hardBrakeCount;
+                addEventLog('brake', `急ブレーキ検出`);
+            } else if (accelPerSec > 12 && speedKmh > prevSpeed && speedKmh > 3) {
+                hardAccelCount++;
+                document.getElementById('hardAccelCount').textContent = hardAccelCount;
+                addEventLog('accel', `急加速検出`);
             }
         }
     }
@@ -310,13 +321,14 @@ function retakeAuto() {
     hardAccelCount = 0;
     totalDistance = 0;
     lastPosition = null;
-    lastSpeed = 0;
+    lastTime = null;
+    firstFix = false;
     eventsLog = [];
     
     document.getElementById('hardBrakeCount').textContent = '0';
     document.getElementById('hardAccelCount').textContent = '0';
     document.getElementById('currentSpeed').textContent = '0';
-    document.getElementById('totalDistance').textContent = '0.00';
+    document.getElementById('totalDistance').textContent = '0.000';
     document.getElementById('elapsedTime').textContent = '00:00';
     
     const eventsLogDiv = document.getElementById('eventsLog');
@@ -325,7 +337,7 @@ function retakeAuto() {
     }
     
     const debugEl = document.getElementById('debugInfo');
-    if (debugEl) debugEl.textContent = '位置情報を待機中...';
+    if (debugEl) debugEl.textContent = 'GPS信号を検索中...';
     
     document.getElementById('resultContainerAuto').style.display = 'none';
     document.getElementById('detectionContainer').style.display = 'none';
